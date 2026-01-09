@@ -3,31 +3,328 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Malla Interactiva Obstetricia Lotita! 💕</title>
+    <title>Malla Interactiva Obstetricia Lotita! 🍮💕</title>
     
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    
-    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
+        /* --- TEMA PURIN (PUDDING) --- */
         :root {
-            /* --- PALETA POMPOMPURIN & PASTEL --- */
-            --fondo-principal: #FFFBE6; /* Color cremita/mantequilla */
-            --texto-cafe: #5D4037; /* Marrón suave en vez de negro */
-            --amarillo-pom: #FFDB4D;
-            --cafe-pom: #6D4C41;
-            
-            /* Colores de Ramos (Versión Pastel) */
-            --clinico: #FFC1E3; /* Rosado pastel */
-            --educacion: #D4E157; /* Verde lima suave */
-            --general: #FFF59D; /* Amarillo patito */
-            --integrador: #CE93D8; /* Lila suave */
-            
-            --fuente-tierna: 'Mali', cursive;
+            /* Paleta de postres suaves */
+            --purin-bg: #FFF9E6;      /* Fondo crema pastelera */
+            --caramel-dark: #C27A3A;  /* Caramelo oscuro para textos y bordes */
+            --caramel-light: #EBCBA7; /* Caramelo claro */
+            --custard: #FCEBB6;       /* Amarillo flan */
+            --cream: #FFFCF2;         /* Crema batida */
+
+            /* Colores de ramos (versión pastel suave para que combinen) */
+            --clinico: #FFC4D6;    /* Rosado pastel */
+            --educacion: #DDF093;  /* Verde lima suave */
+            --general: #FFF399;    /* Amarillo mantequilla */
+            --integrador: #CABBE9; /* Lavanda suave */
         }
 
         body { 
-            font-family: var(--fuente-tierna); 
-            background-color: var(--fondo-principal);
-            /* Patrón de fondo sutil (opcional, si encuentras una imagen linda de fondo repetible) */
-            background
+            font-family: 'Segoe UI Rounded', 'Nunito', sans-serif; /* Fuente más redonda si está disponible */
+            background-color: var(--purin-bg);
+            background-image: radial-gradient(var(--caramel-light) 1px, transparent 1px);
+            background-size: 20px 20px; /* Patrón de puntitos monos */
+            padding: 20px; 
+            color: var(--caramel-dark);
+        }
+        
+        h1 { 
+            text-align: center; 
+            color: var(--caramel-dark); 
+            margin-bottom: 15px;
+            font-weight: 800;
+            text-shadow: 2px 2px 0px var(--custard);
+        }
+
+        /* --- ESTILOS BARRA DE PROGRESO PURIN --- */
+        .progress-container {
+            background: var(--cream);
+            border: 3px solid var(--caramel-dark); /* Borde de molde de postre */
+            border-radius: 30px; /* Muy redondo */
+            margin: 0 auto 30px auto;
+            max-width: 800px;
+            height: 30px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(194, 122, 58, 0.2);
+            position: relative;
+        }
+
+        .progress-bar {
+            /* Degradado de flan a caramelo */
+            background: linear-gradient(90deg, var(--custard), var(--caramel-dark));
+            height: 100%;
+            width: 0%;
+            text-align: center;
+            color: var(--cream);
+            font-size: 0.9rem;
+            line-height: 30px;
+            font-weight: bold;
+            transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); /* Efecto rebote "bouncy" */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+        /* -------------------------------- */
+
+        .malla-grid {
+            display: grid;
+            /* Minimo 170px para que se vean bien los textos en las tarjetas redondas */
+            grid-template-columns: repeat(10, minmax(170px, 1fr)); 
+            gap: 15px; /* Más espacio entre postres */
+            overflow-x: auto;
+            padding-bottom: 25px;
+            padding-right: 10px;
+        }
+
+        .malla-grid > div:last-child {
+            grid-column: span 2; 
+            padding: 5px;
+            /* Un fondo sutil para unir el internado */
+            background-color: rgba(235, 203, 167, 0.2); 
+            border-radius: 25px;
+        }
+
+        .semestre-header {
+            background: var(--caramel-dark);
+            color: var(--custard);
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.85rem;
+            border-radius: 20px; /* Cabeceras redondas */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border: 2px solid var(--caramel-light);
+        }
+
+        .ramo {
+            padding: 12px;
+            border-radius: 25px; /* ¡Súper redondo, estilo Purin! */
+            font-size: 0.75rem;
+            font-weight: 600;
+            min-height: 85px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 4px 6px rgba(194, 122, 58, 0.15);
+            user-select: none;
+            background-color: var(--cream);
+            border: 3px solid transparent; /* Borde invisible preparado */
+            color: var(--caramel-dark);
+        }
+
+        /* Efecto Hover Bouncy */
+        .ramo:hover { 
+            transform: translateY(-5px) scale(1.03); /* Se levanta un poquito */
+            box-shadow: 0 8px 12px rgba(194, 122, 58, 0.25);
+            z-index: 2; 
+        }
+
+        /* --- ESTADO APROBADO: BAÑADO EN CARAMELO --- */
+        .ramo.aprobado {
+            background-color: var(--caramel-dark) !important; /* Fondo caramelo oscuro */
+            color: var(--custard) !important; /* Texto color flan */
+            text-decoration: none; /* Quitamos el tachado feo */
+            opacity: 1;
+            border: 3px solid var(--caramel-light);
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.2); /* Sombra interna para profundidad */
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Pequeño detalle de brillo en los aprobados */
+        .ramo.aprobado::after {
+            content: '✨';
+            position: absolute;
+            top: 5px;
+            right: 8px;
+            font-size: 1rem;
+        }
+
+        /* Clases por color pastel y borde de caramelo */
+        .clinico { background-color: var(--clinico); border-color: rgba(194, 122, 58, 0.3); }
+        .educacion { background-color: var(--educacion); border-color: rgba(194, 122, 58, 0.3); }
+        .general { background-color: var(--general); border-color: rgba(194, 122, 58, 0.3); }
+        .integrador { background-color: var(--integrador); border-color: rgba(194, 122, 58, 0.3); }
+
+        /* Scrollbar bonita para Chrome/Safari */
+        .malla-grid::-webkit-scrollbar { height: 12px; }
+        .malla-grid::-webkit-scrollbar-track { background: var(--purin-bg); border-radius: 10px; }
+        .malla-grid::-webkit-scrollbar-thumb { background: var(--caramel-light); border-radius: 10px; border: 3px solid var(--purin-bg); }
+
+    </style>
+</head>
+<body>
+
+    <h1>🍮 Malla Obstetricia Lotita! 💕</h1>
+    
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar">0%</div>
+    </div>
+
+    <div class="malla-grid" id="mallaContainer"></div>
+
+    <script>
+        // DATA (Sin cambios, solo la estructura visual cambia)
+        const malla = [
+            // Semestre 1
+            [
+                { nombre: "Biología Celular", tipo: "clinico" },
+                { nombre: "Introducción a la Matronería", tipo: "clinico" },
+                { nombre: "Química General y Orgánica", tipo: "clinico" },
+                { nombre: "Habilidades Comunicativas", tipo: "general" },
+                { nombre: "Inglés I", tipo: "general" }
+            ],
+            // Semestre 2
+            [
+                { nombre: "Morfología General", tipo: "clinico" },
+                { nombre: "Salud Pública", tipo: "clinico" },
+                { nombre: "Cuidados Médico - Quirúrgicos I", tipo: "clinico" },
+                { nombre: "Microbiología y Parasitología", tipo: "clinico" },
+                { nombre: "Inglés II", tipo: "general" }
+            ],
+            // Semestre 3
+            [
+                { nombre: "Bases Perinatales y Ginecológicas", tipo: "clinico" },
+                { nombre: "Cuidados Medico - Quirúrgicos II", tipo: "clinico" },
+                { nombre: "Políticas en Salud Sexual y Reproductiva", tipo: "clinico" },
+                { nombre: "Pensamiento Critico", tipo: "general" },
+                { nombre: "Ingles III", tipo: "general" }
+            ],
+            // Semestre 4
+            [
+                { nombre: "Matronería y Bases Fisiopatológicas", tipo: "clinico" },
+                { nombre: "Salud Sexual, Reproductiva y Gestión I", tipo: "clinico" },
+                { nombre: "Administración y Gestión en Salud", tipo: "clinico"},
+                { nombre: "Integrador I: Cuidados Médico - Quirúrgicos de Matronería", tipo: "integrador"},
+            ],
+            // Semestre 5
+            [
+                { nombre: "Farmacología General y Aplicada", tipo: "clinico" },
+                { nombre: "Neonatología,Lactancia y Gestión", tipo: "clinico" },
+                { nombre: "Salud Sexual, Salud Reproductiva y Gestión II", tipo: "clinico"},
+                { nombre: "Psicología Integral y Técnicas de Entrevista Clínica", tipo: "clinico" }
+            ],
+            // Semestre 6
+            [
+                { nombre: "Educación con Enfoque Curso de Vida", tipo: "educacion" },
+                { nombre: "Matronería Patológica Integrada y Gestión", tipo: "clinico" },
+                { nombre: "Bíoestadistica", tipo: "educacion"},
+                { nombre: "Salud Familiar y Comunitaria", tipo: "educacion" }
+            ],
+            // Semestre 7
+            [
+                { nombre: "Metodología de la Investigación", tipo: "clinico" },
+                { nombre: "Sexología, Género y Derecho", tipo: "clinico" },
+                { nombre: "Intervención en Contextos Sociales y Comunitarios", tipo: "educacion"},
+                { nombre: "Matronería Legal y Bioética", tipo: "clinico" }
+            ],
+            // Semestre 8
+            [
+                { nombre: "Integrador II: Práctica de Matronería en la Comunidad", tipo: "integrador" },
+                { nombre: "Imagenología en Matronería", tipo: "clinico" },
+                { nombre: "Matronería Oncológica y Reproducción Asistida", tipo: "integrador"},
+                { nombre: "Proyecto de Matronería", tipo: "general" }
+            ],
+            // SEMESTRE 9 y 10 
+            [
+                { nombre: "Habilitación Profesional I", tipo: "integrador" },
+                { nombre: "Habilitación Profesional II", tipo: "integrador" },
+            ]
+        ];
+
+        const container = document.getElementById('mallaContainer');
+
+        // Renderizado
+        malla.forEach((semestre, index) => {
+            const col = document.createElement('div');
+            col.style.display = 'flex';
+            col.style.flexDirection = 'column';
+            col.style.gap = '12px'; // Un poco más de espacio vertical
+
+            const header = document.createElement('div');
+            header.className = 'semestre-header';
+            
+            if (index === 8) { 
+                header.innerText = "SEM 9 y 10 🎓";
+            } else {
+                header.innerText = `SEM ${index + 1}`;
+            }
+            
+            col.appendChild(header);
+
+            semestre.forEach(ramo => {
+                const card = document.createElement('div');
+                card.className = `ramo ${ramo.tipo}`;
+                card.innerText = ramo.nombre;
+                
+                const ramoID = `s${index}-${ramo.nombre.replace(/\s/g, '')}`;
+                card.dataset.id = ramoID;
+
+                card.onclick = () => toggleRamo(card, ramoID);
+
+                if(localStorage.getItem(ramoID) === 'aprobado') {
+                    card.classList.add('aprobado');
+                }
+
+                col.appendChild(card);
+            });
+
+            container.appendChild(col);
+        });
+
+        // Llamada inicial
+        actualizarProgreso();
+
+        function toggleRamo(element, id) {
+            element.classList.toggle('aprobado');
+            
+            if(element.classList.contains('aprobado')) {
+                localStorage.setItem(id, 'aprobado');
+                // 🎉 EFECTO CONFETI CON COLORES PURIN
+                lanzarConfeti();
+            } else {
+                localStorage.removeItem(id);
+            }
+
+            // 📊 ACTUALIZAR BARRA
+            actualizarProgreso();
+        }
+
+        function actualizarProgreso() {
+            const totalRamos = document.querySelectorAll('.ramo').length;
+            const aprobados = document.querySelectorAll('.ramo.aprobado').length;
+            
+            const porcentaje = Math.round((aprobados / totalRamos) * 100);
+            
+            const barra = document.getElementById('progressBar');
+            barra.style.width = `${porcentaje}%`;
+            
+            if(porcentaje > 5) {
+                barra.innerText = `${porcentaje}% Caramelo!`; // Texto temático
+            } else {
+                barra.innerText = "";
+            }
+        }
+
+        // Configuración del confeti (Colores de postre)
+        function lanzarConfeti() {
+            confetti({
+                particleCount: 120,
+                spread: 80,
+                origin: { y: 0.6 },
+                // Colores: Caramelo, Flan, Crema, y un toque de cereza roja
+                colors: ['#C27A3A', '#FCEBB6', '#FFFCF2', '#E74C3C'] 
+            });
+        }
+    </script>
+</body>
+</html>
