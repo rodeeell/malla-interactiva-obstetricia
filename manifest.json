@@ -1,0 +1,20 @@
+{
+    "name": "Malla Obstetricia Lotita",
+    "short_name": "Malla Lotita",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#FFF9E6",
+    "theme_color": "#C27A3A",
+    "icons": [
+      {
+        "src": "icon.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "icon.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ]
+  }
