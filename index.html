@@ -60,10 +60,15 @@
         }
 
         /* TRUCO: Hacemos que la última columna (el internado) ocupe 2 espacios */
-        .malla-grid > div:last-child {
-            grid-column: span 2; 
-            padding: 5px;
-            border-radius: 10px;
+        .malla-grid {
+        display: grid;
+        /* CAMBIO CLAVE AQUÍ ABAJO 👇 */
+        grid-template-columns: repeat(10, minmax(160px, 1fr)); 
+        gap: 10px;
+        overflow-x: auto; /* Permite deslizar hacia el lado */
+        padding-bottom: 20px;
+        padding-right: 20px; /* Para que el último ramo no quede pegado al borde */
+}
         }
 
         .semestre-header {
@@ -276,4 +281,5 @@
         }
     </script>
 </body>
+
 </html>
